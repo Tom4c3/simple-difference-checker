@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>オンライン差分チェッカー</title>
+    <title>Simple Difference Checker</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -44,21 +44,21 @@
 </head>
 
 <body>
-    <h1>オンライン差分チェッカー</h1>
+    <h1>Simple Difference Checker</h1>
 
     <div class="container">
         <div class="column">
-            <textarea id="text1" oninput="checkDifference()" placeholder="テキスト1を入力"></textarea>
+            <textarea id="text1" oninput="checkDifference()" placeholder="text1"></textarea>
             <pre id="result1"></pre>
         </div>
 
         <div class="column">
-            <textarea id="text2" oninput="checkDifference()" placeholder="テキスト2を入力"></textarea>
+            <textarea id="text2" oninput="checkDifference()" placeholder="text2"></textarea>
             <pre id="result2"></pre>
         </div>
     </div>
 
-    <h2>統計:</h2>
+    <h2>結果:</h2>
     <p id="statistics"></p>
     <p id="noDifferenceMessage" style="color: green; display: none;">2つの文章は全く同じです</p>
 
@@ -104,7 +104,7 @@
                 document.getElementById('statistics').style.display = 'none';
             } else {
                 document.getElementById('noDifferenceMessage').style.display = 'none';
-                document.getElementById('statistics').textContent = `異なる行数: ${diffLines}, 異なる文字数: ${diffChars}`;
+                document.getElementById('statistics').textContent = `異なる行の数: ${diffLines}, 異なる文字数: ${diffChars}`;
                 document.getElementById('statistics').style.display = 'block';
             }
         }
