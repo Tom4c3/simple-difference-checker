@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>オンライン差分チェッカー</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .container {
+            display: flex;
+            gap: 20px;
+        }
+
+        .column {
+            flex: 1;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 20px;
+        }
+
+        pre {
+            border: 1px solid #ccc;
+            padding: 10px;
+            background-color: #f8f8f8;
+            white-space: pre-wrap;
+        }
+
+        .highlight {
+            background-color: #f88;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>オンライン差分チェッカー</h1>
+
+    <div class="container">
+        <div class="column">
+            <textarea id="text1" oninput="checkDifference()" placeholder="テキスト1を入力"></textarea>
+            <pre id="result1"></pre>
+        </div>
+
+        <div class="column">
+            <textarea id="text2" oninput="checkDifference()" placeholder="テキスト2を入力"></textarea>
+            <pre id="result2"></pre>
+        </div>
+    </div>
+
+    <h2>統計:</h2>
+    <p id="statistics"></p>
+    <p id="noDifferenceMessage" style="color: green; display: none;">2つの文章は全く同じです</p>
+
+    <script>
+        function checkDifference() {
+            const text1 = document.getElementById('text1').value.split('\n');
+            const text2 = document.getElementById('text2').value.split('\n');
+            let result1 = '';
+            let result2 = '';
+            let diffLines = 0;
+            let diffChars = 0;
+
+            for (let i = 0; i < Math.max(text1.length, text2.length); i++) {
+                let line1 = text1[i] || '';
+                let line2 = text2[i] || '';
+                let highlightedLine1 = '';
+                let highlightedLine2 = '';
+                let hasDifference = false;
+
+                for (let j = 0; j < Math.max(line1.length, line2.length); j++) {
+                    if (line1[j] !== line2[j]) {
+                        hasDifference = true;
+                        diffChars++;
+                        highlightedLine1 += '<span class="highlight">' + (line1[j] || ' ') + '</span>';
+                        highlightedLine2 += '<span class="highlight">' + (line2[j] || ' ') + '</span>';
+                    } else {
+                        highlightedLine1 += line1[j] || ' ';
+                        highlightedLine2 += line2[j] || ' ';
+                    }
+                }
+
+                if (hasDifference) {
+                    diffLines++;
+                    result1 += 'Line:' + (i + 1) + ': ' + highlightedLine1 + '\n';
+                    result2 += 'Line:' + (i + 1) + ': ' + highlightedLine2 + '\n';
+                }
+            }
+
+            document.getElementById('result1').innerHTML = result1;
+            document.getElementById('result2').innerHTML = result2;
+            if (diffLines === 0 && diffChars === 0) {
+                document.getElementById('noDifferenceMessage').style.display = 'block';
+                document.getElementById('statistics').style.display = 'none';
+            } else {
+                document.getElementById('noDifferenceMessage').style.display = 'none';
+                document.getElementById('statistics').textContent = `異なる行数: ${diffLines}, 異なる文字数: ${diffChars}`;
+                document.getElementById('statistics').style.display = 'block';
+            }
+        }
+
+        //checkDifference(); // 初回ロード時にも実行
+    </script>
+</body>
+
+</html>
+
+
